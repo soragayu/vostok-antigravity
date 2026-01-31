@@ -1,8 +1,8 @@
 // Supabase クライアント設定
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+const supabaseAnonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 
 // Supabase が設定されているかチェック
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseUrl.includes('supabase.co'));
@@ -15,10 +15,19 @@ if (typeof window !== 'undefined') {
     });
 }
 
-// Supabase クライアント（未設定の場合はダミー）
-export const supabase: SupabaseClient = isSupabaseConfigured
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : createClient('https://placeholder.supabase.co', 'placeholder-key');
+// Supabase クライアント生成（エラーハンドリング付き）
+const createSupabaseClient = () => {
+    if (isSupabaseConfigured) {
+        try {
+            return createClient(supabaseUrl, supabaseAnonKey);
+        } catch (e) {
+            console.error('Failed to initialize Supabase client:', e);
+        }
+    }
+    return createClient('https://placeholder.supabase.co', 'placeholder-key');
+};
+
+export const supabase: SupabaseClient = createSupabaseClient();
 
 // デモモード用のローカルストレージ
 function getLocalStorage<T>(key: string): T[] {
