@@ -261,7 +261,11 @@ export default function Home() {
           src="/images/smoke-light.png"
           alt=""
           fill
-          style={{ objectFit: 'cover', opacity: 0.8 }}
+          style={{
+            objectFit: 'cover',
+            opacity: 0.8,
+            transition: 'all 1s ease-in-out'
+          }}
           priority
         />
       </div>
@@ -271,7 +275,7 @@ export default function Home() {
         <div className={styles.titleScreen}>
           <div className={styles.titleContent}>
             <h1 className={`${styles.title} title-display`}>
-              Vostok
+              Vostok6
             </h1>
             <p className={styles.subtitle}>- SPAGUI. I. -</p>
             {!isSupabaseConfigured && mounted && (
@@ -321,8 +325,15 @@ export default function Home() {
         <div className={styles.prologueScreen}>
           <h2 className={`${styles.sectionTitle} title-display`}>プロローグ</h2>
           <div className={`${styles.prologueText} card`}>
-            {prologue.split('\n').map((line, i) => (
-              <p key={i}>{line}</p>
+            {prologue.trim().split(/\n\s*\n/).map((paragraph, i) => (
+              <p key={i}>
+                {paragraph.split('\n').map((line, j, array) => (
+                  <span key={j}>
+                    {line}
+                    {j < array.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
             ))}
           </div>
           <button className="btn btn-primary" onClick={handlePrologueComplete}>

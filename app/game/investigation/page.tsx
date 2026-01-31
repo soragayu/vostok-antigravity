@@ -86,26 +86,17 @@ export default function InvestigationPage() {
             item.stage === config.targetStage && allFoundItemIds.includes(item.id)
         ).length || 0;
 
-        // この場所を既に選択している数
-        const selectionCount = selectedLocations.filter(id => id === locationId).length;
+        // 追加可能か判定 (場所ごとの上限チェック)
+        const canAddThisLoc = foundCount < config.maxSearchesPerLoc;
 
-        // 追加可能か判定 (場所ごとの上限チェック & 全体の上限チェック)
-        // 場所ごとの上限: 既に発見済み + 今回の選択数 < 上限
-        const canAddThisLoc = (foundCount + selectionCount) < config.maxSearchesPerLoc;
-        const canAddTotal = selectedLocations.length < config.maxSelectable;
-
-        if (canAddThisLoc && canAddTotal) {
-            // 追加
-            setSelectedLocations(prev => [...prev, locationId]);
-        } else {
-            // 追加できない場合（上限到達時）は、選択済みなら1つ減らす（サイクリックな操作感）
-            if (selectionCount > 0) {
-                const index = selectedLocations.indexOf(locationId);
-                if (index > -1) {
-                    const newLocs = [...selectedLocations];
-                    newLocs.splice(index, 1);
-                    setSelectedLocations(newLocs);
-                }
+        if (canAddThisLoc) {
+            // 常に1つだけ選択状態にする（トグル動作ではなく、クリックしたらそれが選択される）
+            if (selectedLocations.includes(locationId)) {
+                // 既に選択済みの場合は解除
+                setSelectedLocations([]);
+            } else {
+                // 新規選択（他は解除）
+                setSelectedLocations([locationId]);
             }
         }
     };
@@ -119,50 +110,66 @@ export default function InvestigationPage() {
         const allPlayers = await getPlayers(roomId);
         const allFoundItemIds = allPlayers.flatMap(p => p.items || []);
         const itemsToFind: { id: number; name: string; description: string }[] = [];
-        const foundInBatch: number[] = []; // このバッチで見つけたアイテムIDを記録（重複防止）
 
-        selectedLocations.forEach(locId => {
-            const location = locations.find(l => l.id === locId);
-            if (location) {
-                // 現在のステージのアイテムのうち、まだ誰も見つけていないものを1つだけ探す
-                // foundInBatch に含まれるものも除外する
-                const nextItem = location.items
-                    .filter(item =>
-                        item.stage === config.targetStage &&
-                        !allFoundItemIds.includes(item.id) &&
-                        !foundInBatch.includes(item.id)
-                    )
-                    .sort((a, b) => a.id - b.id)[0];
+        // 単一選択なので最初の要素を取得
+        const locId = selectedLocations[0];
+        const location = locations.find(l => l.id === locId);
 
-                if (nextItem) {
-                    itemsToFind.push({ id: nextItem.id, name: nextItem.name, description: nextItem.description });
-                    foundInBatch.push(nextItem.id);
-                }
+        if (location) {
+            // 現在のステージのアイテムのうち、まだ誰も見つけていないものを1つだけ探す
+            const nextItem = location.items
+                .filter(item =>
+                    item.stage === config.targetStage &&
+                    !allFoundItemIds.includes(item.id)
+                )
+                .sort((a, b) => a.id - b.id)[0];
+
+            if (nextItem) {
+                itemsToFind.push({ id: nextItem.id, name: nextItem.name, description: nextItem.description });
             }
-        });
+        }
 
         // プレイヤーのアイテムを更新
         const currentPlayer = allPlayers.find(p => p.id === playerInfo.id);
-        if (currentPlayer) {
-            const newItems = [...(currentPlayer.items || [])];
-            itemsToFind.forEach(item => {
-                if (!newItems.includes(item.id)) {
-                    newItems.push(item.id);
-                }
-            });
+        const playerItems = currentPlayer?.items || [];
+        // 今のフェーズで見つけたアイテム数
+        const currentFoundCount = locations.flatMap(l => l.items)
+            .filter(item => item.stage === config.targetStage && playerItems.includes(item.id))
+            .length;
 
+        // 今回見つかったアイテムがあれば追加
+        const newItems = [...playerItems];
+        itemsToFind.forEach(item => {
+            if (!newItems.includes(item.id)) {
+                newItems.push(item.id);
+            }
+        });
+
+        // 規定数に達したかチェック (今回見つけた分も含める)
+        // 今回の捜査で見つけた数(最大1) + 既に見つけていた数
+        const totalFound = currentFoundCount + itemsToFind.length;
+
+        if (totalFound >= config.maxSelectable) {
             // 捜査完了フラグアイテムを追加 (Investigation 1: 901, Investigation 2: 902)
             const flagId = room.phase === 'investigation1' ? 901 : 902;
             if (!newItems.includes(flagId)) {
                 newItems.push(flagId);
             }
+        }
 
+        if (currentPlayer) {
             await updatePlayer(playerInfo.id, { items: newItems });
         }
 
         setFoundItems(itemsToFind);
         setInvestigationComplete(true);
         setLoading(false);
+    };
+
+    const handleContinueInvestigation = () => {
+        setInvestigationComplete(false);
+        setFoundItems([]);
+        setSelectedLocations([]);
     };
 
     const handleReturn = async () => {
@@ -190,6 +197,13 @@ export default function InvestigationPage() {
     const config = getInvestigationConfig(room.phase);
     const allFoundItemIds = players.flatMap(p => p.items || []);
 
+    // 現在のプレイヤーの進捗状況
+    const currentPlayer = players.find(p => p.id === playerInfo.id);
+    const myFoundCount = locations.flatMap(l => l.items)
+        .filter(item => item.stage === config.targetStage && (currentPlayer?.items || []).includes(item.id))
+        .length;
+    const remainingCount = config.maxSelectable - myFoundCount;
+
     const isLightBackground = room.phase !== 'investigation2';
 
     return (
@@ -210,8 +224,8 @@ export default function InvestigationPage() {
                 <h1>捜査フェーズ</h1>
                 <p className={styles.instruction}>
                     {investigationComplete
-                        ? '捜査が完了しました！'
-                        : `調べたい場所を${config.maxSelectable}箇所まで選択してください`}
+                        ? (remainingCount > 0 ? `あと${remainingCount}箇所調査できます` : '捜査が完了しました！')
+                        : `調べたい場所を選択してください（残り${remainingCount}回）`}
                 </p>
             </header>
 
@@ -246,7 +260,7 @@ export default function InvestigationPage() {
                         </div>
 
                         <div className={styles.selectionInfo}>
-                            選択中: {selectedLocations.length} / {config.maxSelectable}
+                            選択中: {selectedLocations.length} / 1
                         </div>
 
                         <button
@@ -279,8 +293,27 @@ export default function InvestigationPage() {
                             </div>
                         )}
 
-                        {/* 同期待ちロジック */}
+                        {/* 次のアクションボタン */}
                         {(() => {
+                            // まだ調査回数が残っている場合
+                            if (remainingCount > 0) {
+                                return (
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={handleContinueInvestigation}
+                                        style={isLightBackground ? {
+                                            backgroundColor: '#4f46e5',
+                                            color: '#ffffff',
+                                            border: '2px solid #000000',
+                                            fontWeight: 'bold',
+                                            marginTop: '20px'
+                                        } : { marginTop: '20px' }}
+                                    >
+                                        続けて捜査する
+                                    </button>
+                                );
+                            }
+
                             // 全プレイヤーが規定のフラグアイテムを持っているかチェック
                             // Investigation 1: 901, Investigation 2: 902
                             const flagId = room.phase === 'investigation1' ? 901 : 902;

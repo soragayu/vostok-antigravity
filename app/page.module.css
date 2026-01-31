@@ -31,18 +31,18 @@
 .title {
   font-size: 4rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(180deg, #e8e8f0 0%, #6366f1 100%);
+  background: linear-gradient(180deg, #020617 0%, #312e81 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 60px rgba(99, 102, 241, 0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  letter-spacing: 0.1em;
 }
 
 :global(.light-theme) .title {
   background: linear-gradient(180deg, #020617 0%, #312e81 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 :global(.light-theme) body {
@@ -198,7 +198,6 @@
 
 .prologueText p {
   margin-bottom: 1rem;
-  text-indent: 1em;
 }
 
 .prologueText p:empty {
