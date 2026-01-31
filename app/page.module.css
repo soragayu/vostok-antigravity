@@ -1,141 +1,455 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
+.container {
   min-height: 100vh;
+  position: relative;
+}
+
+.smokeOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--bg-primary);
+}
+
+/* タイトル画面 */
+.titleScreen {
+  min-height: 100vh;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  position: relative;
+  z-index: 1;
 }
 
-.main {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+.titleContent {
+  text-align: center;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+.title {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(180deg, #e8e8f0 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 60px rgba(99, 102, 241, 0.5);
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+:global(.light-theme) .title {
+  background: linear-gradient(180deg, #020617 0%, #312e81 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
+:global(.light-theme) body {
+  font-weight: 500;
+}
+
+.subtitle {
+  font-size: 1rem;
   color: var(--text-secondary);
+  letter-spacing: 0.5em;
+  margin-bottom: 3rem;
 }
 
-.intro a {
+.demoWarning {
+  color: var(--accent-danger);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
   font-weight: 500;
-  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
 }
 
-.ctas {
+/* 各画面共通 */
+.introScreen,
+.prologueScreen,
+.selectScreen,
+.roomScreen {
+  min-height: 100vh;
+  padding: 4rem 2rem;
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  position: relative;
+  z-index: 1;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.sectionTitle {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(180deg, #e8e8f0 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+:global(.light-theme) .sectionTitle {
+  background: linear-gradient(180deg, #020617 0%, #312e81 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
+/* キャラクターグリッド */
+.characterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.characterCard {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.silhouetteContainer {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.characterCard h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.role {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.characterInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 @media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+  .characterGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .intro {
-    gap: 16px;
+  .characterCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* 中央揃え */
+    text-align: left;
+    padding: 1rem;
+    gap: 1rem;
   }
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
+  .silhouetteContainer {
+    width: 80px;
+    height: 120px;
+    /* 高さを抑える */
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .characterInfo {
+    flex: 1;
+  }
+
+  .characterCard h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  .role {
+    margin-bottom: 0.25rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+/* プロローグ */
+.prologueText {
+  max-width: 800px;
+  width: 95%;
+  margin-bottom: 2rem;
+  font-size: 1.15rem;
+  line-height: 2.2;
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+}
+
+.prologueText p {
+  margin-bottom: 1rem;
+  text-indent: 1em;
+}
+
+.prologueText p:empty {
+  height: 1rem;
+}
+
+/* キャラクター選択 */
+.nameInput {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.nameInput label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.characterSelect {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.selectCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.selectCard.selected {
+  border-color: var(--char-color);
+  box-shadow: 0 0 20px var(--char-color);
+}
+
+.silhouetteSmall {
+  flex-shrink: 0;
+  width: 60px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectInfo h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.selectInfo p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* エラー */
+.error {
+  color: var(--accent-danger);
+  margin-bottom: 1rem;
+}
+
+/* ルーム画面 */
+.roomOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 700px;
+  width: 100%;
+}
+
+.roomOption {
+  text-align: center;
+  padding: 2rem;
+}
+
+.roomOption h3 {
+  margin-bottom: 1.5rem;
+}
+
+.roomInfo {
+  max-width: 500px;
+  width: 100%;
+}
+
+.roomInfo h3 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.playerList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.playerItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.playerItem.empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.playerName {
+  font-weight: 500;
+}
+
+.startBtn {
+  min-width: 200px;
+}
+
+.roomIdDisplay {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: 8px;
+}
+
+.roomIdLabel {
+  color: var(--text-secondary);
+}
+
+.roomIdValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent-secondary);
+}
+
+.waitingText {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+
+  .introScreen,
+  .prologueScreen,
+  .selectScreen,
+  .roomScreen {
+    padding: 2rem 1rem;
   }
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+  .sectionTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+  .title {
+    font-size: 2.5rem;
+  }
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 2rem;
+  }
+
+  .characterGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .characterCard {
+    padding: 1rem;
+  }
+
+  .silhouetteContainer {
+    height: 120px;
+  }
+
+  .characterCard h3 {
+    font-size: 1rem;
+  }
+
+  .role {
+    font-size: 0.8rem;
+  }
+
+  .description {
+    font-size: 0.75rem;
+  }
+
+  .prologueText {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .characterSelect {
+    grid-template-columns: 1fr;
+  }
+
+  .selectCard {
+    padding: 0.75rem;
+  }
+
+  .silhouetteSmall {
+    width: 50px;
+    height: 80px;
+  }
+
+  .selectInfo h3 {
+    font-size: 1rem;
+  }
+
+  .roomOptions {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .roomOption {
+    padding: 1.25rem;
+  }
+
+  .roomIdDisplay {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .roomIdValue {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .characterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .silhouetteContainer {
+    height: 100px;
   }
 }

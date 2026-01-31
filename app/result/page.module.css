@@ -1,0 +1,249 @@
+.container {
+    min-height: 100vh;
+    position: relative;
+    background: transparent;
+}
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.main {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(180deg, #e8e8f0 0%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+/* 投票一覧 */
+.voteList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.noVotes {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.voteCard {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.voteCard.correct {
+    border-color: var(--accent-success);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.voteCard.incorrect {
+    border-color: var(--accent-danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.voterName {
+    font-weight: 700;
+    font-size: 1.1rem;
+    min-width: 100px;
+}
+
+.voteDetails {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.voteResult {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.voteCard.correct .voteResult {
+    color: var(--accent-success);
+}
+
+.voteCard.incorrect .voteResult {
+    color: var(--accent-danger);
+}
+
+/* 正解カード */
+.answerCard {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.answerCard p {
+    margin-bottom: 0.75rem;
+}
+
+/* エンディング */
+.endingMain {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.ending {
+    text-align: center;
+    max-width: 700px;
+}
+
+.endingTitle {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.trueTitle {
+    color: #111827;
+}
+
+.badTitle {
+    color: #ef4444;
+}
+
+.endingCard {
+    font-size: 1.1rem;
+    line-height: 2;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.endingCard p {
+    margin-bottom: 1rem;
+    text-indent: 1em;
+}
+
+.thanks {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.trueEndingContent {
+    line-height: 2.2;
+    color: #1f2937;
+}
+
+.badEndingContent {
+    line-height: 2.2;
+    color: #e2e8f0;
+}
+
+.trueEndingContent p,
+.badEndingContent p {
+    text-indent: 0;
+    margin-bottom: 0;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .main {
+        padding: 2rem 1rem;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section h2 {
+        font-size: 1.25rem;
+    }
+
+    .voteCard {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .voterName {
+        font-size: 1rem;
+        min-width: auto;
+    }
+
+    .voteDetails {
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.85rem;
+    }
+
+    .voteResult {
+        font-size: 0.9rem;
+    }
+
+    .answerCard {
+        font-size: 1rem;
+    }
+
+    .endingMain {
+        padding: 1.5rem;
+    }
+
+    .endingTitle {
+        font-size: 2rem;
+    }
+
+    .endingCard {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .endingTitle {
+        font-size: 1.5rem;
+    }
+}

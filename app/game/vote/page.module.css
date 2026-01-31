@@ -1,0 +1,183 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: transparent;
+}
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.header {
+    padding: 2rem;
+    text-align: center;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    z-index: 1;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(180deg, #e8e8f0 0%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.instruction {
+    color: var(--text-secondary);
+}
+
+.main {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.voteForm {
+    max-width: 900px;
+    width: 100%;
+}
+
+.voteSection {
+    margin-bottom: 2rem;
+}
+
+.voteSection h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.optionGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.optionBtn {
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.optionBtn:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-card-hover);
+}
+
+.optionBtn.selected {
+    border-color: var(--accent-secondary);
+    background: var(--accent-primary);
+    color: white;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+}
+
+/* 投票完了 */
+.submitted {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.submitted h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent-success);
+}
+
+.submitted p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.voteCount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    margin-bottom: 2rem;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .header {
+        padding: 1.5rem 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .instruction {
+        font-size: 0.9rem;
+    }
+
+    .main {
+        padding: 1rem;
+    }
+
+    .voteSection {
+        margin-bottom: 1.5rem;
+    }
+
+    .voteSection h3 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .optionGrid {
+        gap: 0.5rem;
+    }
+
+    .optionBtn {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    .submitted {
+        padding: 2rem 1rem;
+    }
+
+    .submitted h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .optionGrid {
+        flex-direction: column;
+    }
+
+    .optionBtn {
+        width: 100%;
+        text-align: center;
+    }
+}

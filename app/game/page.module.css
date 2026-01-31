@@ -1,0 +1,576 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 10;
+}
+
+/* ヘッダー */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    z-index: 1;
+}
+
+.phaseInfo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.phaseIndicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.phaseDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.timer {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer.warning {
+    color: var(--accent-warning);
+}
+
+.timer.danger {
+    color: var(--accent-danger);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.playerInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.playerCharacter {
+    font-weight: 700;
+}
+
+.resetBtn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 1rem;
+    transition: all 0.2s;
+}
+
+.resetBtn:hover {
+    background: var(--accent-danger);
+    color: white;
+    border-color: var(--accent-danger);
+}
+
+.playerName {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* タブ */
+.tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.75rem 2rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.tab {
+    padding: 0.5rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-card);
+}
+
+.tab.active {
+    color: var(--accent-secondary);
+    background: var(--bg-card);
+}
+
+/* メインコンテンツ */
+.main {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.content h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+:global(.light-theme) .content h2 {
+    color: #020617;
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 0.5rem;
+}
+
+/* ハンドアウト */
+.handoutCard {
+    margin-bottom: 1rem;
+    position: relative;
+    background: var(--bg-card);
+}
+
+:global(.light-theme) .handoutCard {
+    background: #ffffff !important;
+}
+
+.handoutCard p {
+    margin-bottom: 0.5rem;
+    line-height: 1.8;
+}
+
+.additionalBadge {
+    position: absolute;
+    top: -0.5rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--accent-warning);
+    color: #000;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.mapImageContainer {
+    width: 100%;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.mapImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* マップ */
+.mapGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.locationCard h3 {
+    margin-bottom: 0.5rem;
+    color: var(--accent-secondary);
+}
+
+.locationCard p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* キャラクター */
+.characterList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.characterItem {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: var(--bg-card);
+}
+
+:global(.light-theme) .characterItem {
+    background: #ffffff !important;
+}
+
+.characterAvatar {
+    flex-shrink: 0;
+    width: 60px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.characterDetails h3 {
+    margin-bottom: 0.25rem;
+}
+
+.role {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.playerLabel {
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    font-style: italic;
+}
+
+/* プロローグ */
+.prologueCard {
+    max-width: 800px;
+    width: 95%;
+    line-height: 2.2;
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 12px;
+}
+
+:global(.light-theme) .prologueCard {
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.prologueCard p {
+    margin-bottom: 0.75rem;
+    text-indent: 1em;
+}
+
+/* アイテム */
+.emptyMessage {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.itemList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+:global(.light-theme) .itemCard {
+    background: #ffffff !important;
+}
+
+.itemCard h3 {
+    margin-bottom: 0.5rem;
+    color: var(--accent-secondary);
+}
+
+.itemCard p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.itemLocation {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* フッター */
+.footer {
+    padding: 1rem 2rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+}
+
+:global(.light-theme) .footer {
+    border-top: 2px solid var(--border-color);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.phaseLabel {
+    font-size: 0.85rem;
+}
+
+.nextPhaseBtn {
+    font-weight: 700;
+    min-width: 200px;
+}
+
+:global(.light-theme) .nextPhaseBtn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .phaseInfo {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .phaseIndicator {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .phaseDot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .timer {
+        font-size: 1.2rem;
+    }
+
+    .playerInfo {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabs {
+        padding: 0.5rem 0.75rem;
+        gap: 0.15rem;
+    }
+
+    .tab {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .main {
+        padding: 1rem;
+    }
+
+    .content h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .mapGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .characterItem {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+
+    .characterAvatar {
+        width: 100%;
+        height: 80px;
+    }
+
+    .itemList {
+        grid-template-columns: 1fr;
+    }
+
+    .footer {
+        padding: 0.75rem 1rem;
+    }
+}
+
+.erosionOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    pointer-events: none;
+    animation: erosionAnim 4s ease-in-out forwards;
+}
+
+@keyframes erosionAnim {
+    0% {
+        opacity: 0;
+        clip-path: circle(0% at 50% 50%);
+    }
+
+    30% {
+        opacity: 1;
+        clip-path: circle(50% at 50% 50%);
+    }
+
+    50% {
+        opacity: 1;
+        clip-path: circle(150% at 50% 50%);
+    }
+
+    80% {
+        opacity: 1;
+        clip-path: circle(150% at 50% 50%);
+    }
+
+    100% {
+        opacity: 0;
+        clip-path: circle(150% at 50% 50%);
+    }
+}
+
+.handoutOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.handoutModalContent {
+    width: 90%;
+    max-width: 800px;
+    background: #1e1e30;
+    padding: 3rem;
+    border-radius: 20px;
+    border: 2px solid #4f46e5;
+    box-shadow: 0 0 50px rgba(79, 70, 229, 0.4);
+    animation: modalPop 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.handoutHeader {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.handoutBadge {
+    background: #4f46e5;
+    color: #ffffff;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1rem;
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.6);
+}
+
+.handoutHeader h1 {
+    margin-top: 1rem;
+    font-size: 2.5rem;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+.handoutBody {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+    font-size: 1.15rem;
+    line-height: 2.2;
+    color: #e2e8f0;
+}
+
+.handoutText p {
+    margin-bottom: 1.5rem;
+}
+
+.handoutFooter {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
